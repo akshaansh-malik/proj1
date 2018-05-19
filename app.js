@@ -39,12 +39,27 @@ app.use(express.static(__dirname+"/public"));
    
    
 app.use(function(req,res,next){
+//    console.log(req.user);
     res.locals.currentUser=req.user;
     res.locals.error=req.flash("error");
     res.locals.success=req.flash("success");
     next();
 });
 
+var NodeGeocoder = require('node-geocoder');
+ 
+var options = {
+  provider: 'google',
+ 
+  // Optional depending on the providers
+  httpAdapter: 'https', // Default
+  apiKey: 'AIzaSyCbAQEyMGakJz_1F7dgcKQ2W6e2x0wtm-Y', // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
+ 
+var geocoder = NodeGeocoder(options);
+ 
+// Using callback
 
 app.use(campgroundRoutes);
 app.use(commentRoutes);

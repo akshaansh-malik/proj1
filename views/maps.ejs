@@ -1,0 +1,56 @@
+<%include ./partials/header  %>
+
+<h3 style="text-align : center;">Campgrounds</h3>
+<div style="width: 30%;margin: 30px auto">
+<form action="/search" method="POST"> 
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Search" name="search"></input>
+            </div>
+            <div class="form-group" style="text-align:center;">
+                <button class="btn btn-primary btn-lg">SEARCH</button>
+            </div>
+      </form>
+      </div>
+    <div id="map"></div>
+      
+            
+      
+    <script>
+        
+      //  console.log(lon+" "+lat);
+      function initMap() {
+         var uluru={lat: <%=result[0].lat%>, lng: <%=result[0].lon%>}
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        <% var i=0%>
+        <%for(;i<result.length;i++){%>
+            uluru = {lat: <%=result[i].lat%>, lng: <%=result[i].lon%>};
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+        var infoWindow=new google.maps.InfoWindow({
+          content:'<h3> <%=result[i].place%> </h3>'  
+        });
+
+        // marker.addListener('click',function(){
+        //     infoWindow.open(map,marker);
+        // });
+        <%}%>
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAugDzEsv-EeY_KF1T4TsbcPqGaPOFNNZg&callback=initMap">
+    </script>
+
+
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<% include ./partials/footer  %>

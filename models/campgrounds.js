@@ -13,6 +13,10 @@ var campgroundSchema=new mongoose.Schema({
         comments:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Comment"
-        }]
+        }],
+        price:Number,
+        place:String,
+        lon:Number,
+        lat:Number
     });
     module.exports=mongoose.model("Campground",campgroundSchema);

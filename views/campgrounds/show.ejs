@@ -3,20 +3,48 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <p class="lead">YelpCamp</p>
-            <div class="list-group">
-                <li class="list-group-item">Info 1</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item active">Info 3</li>
-            </div>
+            <h3>Location</h3>
+    <div id="map1"></div>
+
+    <script>
+        
+      //  console.log(lon+" "+lat);
+      function initMap() {
+         var uluru={lat: <%=result[0].lat%>, lng: <%=result[0].lon%>}
+        var map = new google.maps.Map(document.getElementById('map1'), {
+          zoom: 8,
+          center: uluru
+        });
+        <% var i=0%>
+        <%for(;i<result.length;i++){%>
+            uluru = {lat: <%=result[i].lat%>, lng: <%=result[i].lon%>};
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+        var infoWindow=new google.maps.InfoWindow({
+          content:'<h3> <%=result[i].place%> </h3>'  
+        });
+
+        marker.addListener('click',function(){
+            infoWindow.open(map,marker);
+        });
+        <%}%>
+        
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAugDzEsv-EeY_KF1T4TsbcPqGaPOFNNZg&callback=initMap">
+    </script>
         </div>
         <div class="col-md-9">
             <div class="thumbnail">
                 <img class="img-responsive" src="<%=campground.image%>"></img>
                 <div class="caption-full">
-                    <h4 class="pull-right">$9.00/night</h4>
+                    <h4 class="pull-right">$:-<%=campground.price%>/night</h4>
                     <h4><a><%=campground.name%></a></h4>
                     <p>Submitted By:-<em><%=campground.author.username%></em></p>
+                    <p>Place:-<em><%=campground.place%></em></p>
                     <p><%=campground.description%></p>
                     <% if(currentUser && campground.author.id.equals(currentUser._id)){%>
                     <a class="btn btn-warning" href="/campgrounds/<%=campground._id%>/edit">EDIT</a>
@@ -35,7 +63,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong><%=comment.author.username%></strong> 
-                            <span class="pull-rigth">10 days ago</span>
+                            <span class="pull-rigth">few minutes ago</span>
                             <p> <%=comment.text %> </p>
                             <% if(currentUser && comment.author.id.equals(currentUser._id)){%>
                             <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/comment/<%=comment._id%>/edit">EDIT</a>
@@ -53,6 +81,11 @@
     
 </div>
 
-
+<div id="google_translate_element" style="display:none;"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <%  include ../partials/footer %>
